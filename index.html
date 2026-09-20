@@ -1,28 +1,213 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <title>老曹的网站</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>逐光时报</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231a2f4e'/><text x='50' y='68' font-size='56' text-anchor='middle' fill='%23ffdf9c' font-family='serif' font-weight='bold'>光</text></svg>">
+    <link rel="preconnect" href="https://miaoda.feishu.cn">
+    <link href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            background-color: #87CEEB;
-            font-family: "微软雅黑";
+            background-color: #eef1f6;
+            font-family: "Noto Serif SC", "SimSun", "Songti SC", serif;
+            color: #2c3e50;
+            padding: 32px 16px;
+            line-height: 1.8;
+        }
+        .page-wrap {
+            max-width: 920px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 42px;
+            box-shadow: 0 8px 30px rgba(26, 47, 78, 0.12);
+            border-radius: 12px;
+            position: relative;
+        }
+        .page-wrap::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #1a2f4e, #b89448, #1a2f4e);
+            border-radius: 12px 12px 0 0;
+        }
+        /* 天气栏 */
+        .weather-bar {
+            background: linear-gradient(90deg, #1a2f4e, #364b70);
+            color: #ffdf9c;
+            padding: 14px 22px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.6px;
+        }
+        .weather-bar span {
+            text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+        }
+        /* 报头 */
+        header {
             text-align: center;
-            padding-top: 50px;
+            margin-top: 30px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid #b89448;
+            position: relative;
         }
-        h1 {
-            color: #ffffff;
-            text-shadow: 2px 2px #333333;
+        .newspaper-name {
+            font-size: 64px;
+            font-weight: 900;
+            color: #223b61;
+            letter-spacing: 16px;
+            margin: 14px 0;
+            text-shadow: 0 1px 2px rgba(184, 148, 72, 0.22);
         }
-        p {
-            font-size: 18px;
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            font-size: 14px;
+            color: #5c6b84;
+            margin-top: 12px;
+        }
+        .divider-thin {
+            height: 1px;
+            background: #d4c29c;
+            margin: 32px 0;
+        }
+        /* 新闻区块 */
+        .news-article {
+            margin-bottom: 46px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e6e2d8;
+        }
+        .news-article:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .news-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1e3458;
+            margin-bottom: 12px;
+            line-height: 1.35;
+        }
+        .news-subtitle {
+            font-size: 15px;
+            color: #74839c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px dotted #d1c9b8;
+        }
+        .news-text {
+            font-size: 17px;
+            line-height: 1.95;
+            text-indent: 2em;
+            text-align: justify;
+            color: #2d3a4f;
+        }
+        .news-text p {
+            margin-bottom: 18px;
+        }
+        .news-text p:last-child {
+            margin-bottom: 0;
+        }
+        /* 页脚 */
+        footer {
+            margin-top: 64px;
+            padding-top: 24px;
+            border-top: 1px solid #d4c29c;
+            text-align: center;
+            font-size: 14px;
+            color: #7c8ca7;
+        }
+        /* 响应式 */
+        @media (max-width: 640px) {
+            body {
+                padding: 16px 8px;
+            }
+            .page-wrap {
+                padding: 24px 18px;
+            }
+            .newspaper-name {
+                font-size: 40px;
+                letter-spacing: 8px;
+            }
+            .news-title {
+                font-size: 24px;
+            }
+            .news-text {
+                font-size: 15px;
+            }
+            .weather-bar {
+                font-size: 13px;
+                padding: 10px 14px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>✨老曹网站✨</h1>
-    <p>这是我手搓出来的！</p>
-    <button onclick="alert('老曹nb🎉')">点我试试</button>
+    <div class="page-wrap">
+        <!-- 天气栏：日期自动加载，天气、气温手动修改 -->
+        <div class="weather-bar">
+            <span id="auto-date">公历：加载中…</span>
+            <span>天气：多云</span>
+            <span>气温：18℃~26℃</span>
+        </div>
+
+        <header>
+            <div class="newspaper-name">逐光时报</div>
+            <div class="info-bar">
+                <span>一份有温度的电子报刊</span>
+                <span>主编：管理员</span>
+            </div>
+        </header>
+
+        <div class="divider-thin"></div>
+
+        <!-- 新闻一：第23届中国—东盟博览会 -->
+        <div class="news-article">
+            <div class="news-title">第23届中国—东盟博览会在南宁举办</div>
+            <div class="news-subtitle">本报通讯员 · 2026-09-20</div>
+            <div class="news-text">
+                <p>第23届中国—东盟博览会、中国—东盟商务与投资峰会于广西南宁如期举行，本届主题为"共享3.0机遇，共创美好生活"。东博会是中国和东南亚国家开展经贸、人文合作的核心平台，今年吸引了中国以及东盟十国，还有多个特邀国家的企业参展。</p>
+                <p>展会聚焦数字经济、绿色能源、现代农业、先进制造等重点领域，大量新产品、新技术集中展出。除商品展销之外，大会还举办多场投资洽谈会、产业论坛，推动中国与东盟之间的贸易往来、项目投资。东盟是中国重要的贸易伙伴，东博会持续多年打通双边合作渠道，助力区域产业链稳定，也促进旅游、文化交流，让中国和东南亚国家的联系更加紧密，对区域共同发展有着重要意义。</p>
+            </div>
+        </div>
+
+        <!-- 新闻二：第20届亚洲运动会 -->
+        <div class="news-article">
+            <div class="news-title">第20届亚洲运动会隆重开幕</div>
+            <div class="news-subtitle">本报通讯员 · 2026-09-20</div>
+            <div class="news-text">
+                <p>9月19日晚，第20届亚洲运动会在日本名古屋瑞穗公园田径场隆重开幕，本届亚运会口号为"在这里，成为一体"。开幕式以"和谐的心跳"为主题，心形主舞台搭配绚丽多彩的光影表演，巧妙融合名古屋本土民俗文化与现代数字科技，带来一场精彩震撼的视听盛宴。共有亚洲45个国家和地区、约1.1万名运动员奔赴赛场，共同参与这场亚洲体育盛会。</p>
+                <p>运动员入场环节备受瞩目，中国体育代表团整齐登场，由篮球运动员胡明轩、拳击运动员吴愉担任旗手，高举五星红旗，步伐昂扬。本次中国代表团共有815名运动员，将在38个大项中奋勇争先。赛事从9月19日持续至10月4日，一共设置43个大项。亚运会以体育为纽带，跨越语言与文化的隔阂，让亚洲青年同台竞技、友好交流，展现奋勇拼搏的体育精神，促进亚洲各国人民相知相亲。</p>
+            </div>
+        </div>
+
+        <footer>
+            © 2026 逐光时报 版权所有｜本刊物为静态电子报，内容由管理员维护更新
+        </footer>
+    </div>
+
+    <script>
+        // 自动读取本机日期
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+        document.getElementById("auto-date").innerText = `公历：${year}年${month}月${day}日`;
+    </script>
 </body>
 </html>
